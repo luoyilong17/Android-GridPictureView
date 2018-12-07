@@ -34,6 +34,7 @@ public class GridPictureView extends RecyclerView implements GridPicture {
     private Context mContext;
     private GPOptions mGPOptions;
     private GridPictureAdapter mGridPictureAdapter;
+    private LoaderPictureStrategy mGridPictureStrategy;//图片加载回调
 
     public GridPictureView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -114,6 +115,7 @@ public class GridPictureView extends RecyclerView implements GridPicture {
         //适配器
         if (mGridPictureAdapter == null) {
             mGridPictureAdapter = new GridPictureAdapter(mContext, new ArrayList<PictureEntity>());
+            mGridPictureAdapter.setGridPictureStrategy(mGridPictureStrategy);
             super.setAdapter(mGridPictureAdapter);
         }
         mGridPictureAdapter.setGPOptions(options);
@@ -184,7 +186,9 @@ public class GridPictureView extends RecyclerView implements GridPicture {
 
     @Override
     public void setLoaderStrategy(LoaderPictureStrategy strategy) {
-        mStrategy = strategy;
+        mGridPictureStrategy = strategy;
+        if (mGridPictureAdapter != null)
+            mGridPictureAdapter.setGridPictureStrategy(mGridPictureStrategy);
     }
 
     //全局调用

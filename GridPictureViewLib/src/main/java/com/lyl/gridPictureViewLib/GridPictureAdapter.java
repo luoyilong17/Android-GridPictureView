@@ -27,6 +27,7 @@ class GridPictureAdapter extends RecyclerView.Adapter<GridPictureAdapter.ViewHol
     private Context mContext;
     private List<PictureEntity> data;
     private GPOptions mGPOptions;
+    private LoaderPictureStrategy mGridPictureStrategy;//图片加载回调
 
     public GridPictureAdapter(Context context, List<PictureEntity> entityList) {
         this.mContext = context;
@@ -74,9 +75,15 @@ class GridPictureAdapter extends RecyclerView.Adapter<GridPictureAdapter.ViewHol
 
         if (PictureEntity.PICTURE_TYPE_PATH.equalsIgnoreCase(pictureType)) {//图片路径
             String picturePath = pictureEntity.getPicturePath();
-            LoaderPictureStrategy loaderPictureStrategy = GridPictureView.getLoaderPictureStrategy();
-            if (loaderPictureStrategy != null)
-                loaderPictureStrategy.request(mContext, picturePath, holder.mImg_content);
+
+            if (mGridPictureStrategy != null)//内部回调优先使用
+                mGridPictureStrategy.request(mContext, picturePath, holder.mImg_content);
+            else {//全局回调
+                LoaderPictureStrategy loaderPictureStrategy = GridPictureView.getLoaderPictureStrategy();
+                if (loaderPictureStrategy != null)
+                    loaderPictureStrategy.request(mContext, picturePath, holder.mImg_content);
+            }
+
         } else if (PictureEntity.PICTURE_TYPE_RESOURCE.equalsIgnoreCase(pictureType)) {//本地资源图片
             holder.mImg_content.setImageResource(pictureEntity.getPictureResource());
         }
@@ -243,6 +250,10 @@ class GridPictureAdapter extends RecyclerView.Adapter<GridPictureAdapter.ViewHol
         mGPOptions = options;
     }
 
+    public void setGridPictureStrategy(LoaderPictureStrategy gridPictureStrategy) {
+        this.mGridPictureStrategy = gridPictureStrategy;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView mImg_content;
         private ImageView mImg_clear;
@@ -253,4 +264,6 @@ class GridPictureAdapter extends RecyclerView.Adapter<GridPictureAdapter.ViewHol
             mImg_clear = itemView.findViewById(R.id.item_gridPictureAdapter_img_clear);
         }
     }
+
+
 }
