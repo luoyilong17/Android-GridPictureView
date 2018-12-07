@@ -41,14 +41,6 @@ public class GridPictureView extends RecyclerView implements GridPicture {
 
 
     @Override
-    public void addPicture(File file) {
-        if (mGridPictureAdapter == null)
-            return;
-
-//        this.mGridPictureAdapter.addData(file);
-    }
-
-    @Override
     public void addPicture(int resId) {
         if (mGridPictureAdapter == null)
             return;

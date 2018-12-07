@@ -72,16 +72,13 @@ class GridPictureAdapter extends RecyclerView.Adapter<GridPictureAdapter.ViewHol
         if (TextUtils.isEmpty(pictureType))
             return;
 
-        if (PictureEntity.PICTURE_TYPE_FILE.equalsIgnoreCase(pictureType)) {//图片文件
-
-        } else if (PictureEntity.PICTURE_TYPE_PATH.equalsIgnoreCase(pictureType)) {//图片路径
+        if (PictureEntity.PICTURE_TYPE_PATH.equalsIgnoreCase(pictureType)) {//图片路径
             String picturePath = pictureEntity.getPicturePath();
-            GridPictureView.getLoaderPictureStrategy().request(context
-                    , picturePath, holder.mImg_content);
+            LoaderPictureStrategy loaderPictureStrategy = GridPictureView.getLoaderPictureStrategy();
+            if (loaderPictureStrategy != null)
+                loaderPictureStrategy.request(context, picturePath, holder.mImg_content);
         } else if (PictureEntity.PICTURE_TYPE_RESOURCE.equalsIgnoreCase(pictureType)) {//本地资源图片
             holder.mImg_content.setImageResource(pictureEntity.getPictureResource());
-//            GridPictureView.getLoaderPictureStrategy().request(context
-//                    , pictureEntity.getPictureResource(), holder.mImg_content);
         }
 
         //图片点击事件

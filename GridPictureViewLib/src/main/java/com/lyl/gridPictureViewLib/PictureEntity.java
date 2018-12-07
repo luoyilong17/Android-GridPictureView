@@ -12,28 +12,14 @@ import java.io.File;
  * @date on 2018/12/5
  **/
 class PictureEntity {
-    public static final String PICTURE_TYPE_FILE = "pictureFile";
     public static final String PICTURE_TYPE_PATH = "picturePath";
     public static final String PICTURE_TYPE_RESOURCE = "pictureResource";
 
     private String pictureType;//图片类型 pictureFile\picturePath\pictureResource
-    private File pictureFile;//文件
     private String picturePath;//路径
     private int pictureResource;//资源
-    private boolean isAdd = false;//是否为新增图标
+    private boolean isAdd = false;//标记是否为新增图标
 
-
-    /**
-     * 创建PictureEntity 实体
-     *
-     * @param pictureFile
-     * @param isAdd       标记是否为新增按钮图片
-     */
-    public PictureEntity(File pictureFile, boolean isAdd) {
-        this.pictureFile = pictureFile;
-        this.pictureType = PICTURE_TYPE_FILE;
-        this.isAdd = isAdd;
-    }
 
     /**
      * 创建PictureEntity 实体
@@ -66,14 +52,6 @@ class PictureEntity {
 
     public void setPictureType(String pictureType) {
         this.pictureType = pictureType;
-    }
-
-    public File getPictureFile() {
-        return pictureFile;
-    }
-
-    public void setPictureFile(File pictureFile) {
-        this.pictureFile = pictureFile;
     }
 
     public String getPicturePath() {
