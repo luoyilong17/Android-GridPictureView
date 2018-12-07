@@ -187,7 +187,7 @@ public class GridPictureView extends RecyclerView implements GridPicture {
     }
 
     private static LoaderPictureStrategy mStrategy;
-    public static void setLoaderStrategy(LoaderPictureStrategy strategy) {
+    public static void setGlobalLoaderStrategy(LoaderPictureStrategy strategy) {
         mStrategy = strategy;
     }
 

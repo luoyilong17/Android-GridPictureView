@@ -10,6 +10,6 @@ import com.lyl.gridPictureViewLib.GridPictureView;
 public class APP extends Application {
     static {
         //设置图片加载代理
-        GridPictureView.setLoaderStrategy(new GlideLoaderPictureStrategy());
+        GridPictureView.setGlobalLoaderStrategy(new GlideLoaderPictureStrategy());
     }
 }
