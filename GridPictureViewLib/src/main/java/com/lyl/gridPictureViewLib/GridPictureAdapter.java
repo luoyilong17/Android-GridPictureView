@@ -11,9 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
-import com.lyl.gridPictureViewLib.glide.GlideApp;
 import com.lyl.gridPictureViewLib.options.GPAddPicture;
 import com.lyl.gridPictureViewLib.options.GPDeletePicture;
 import com.lyl.gridPictureViewLib.options.GPFrame;
@@ -29,7 +31,7 @@ import java.util.List;
  *
  * @ Date 2018-12-04
  */
- class GridPictureAdapter extends RecyclerView.Adapter<GridPictureAdapter.ViewHolder> {
+class GridPictureAdapter extends RecyclerView.Adapter<GridPictureAdapter.ViewHolder> {
 
     private Context context;
     private List<PictureEntity> data;
@@ -54,16 +56,20 @@ import java.util.List;
 
     @Override
     public void onBindViewHolder(@NonNull GridPictureAdapter.ViewHolder holder, final int position) {
+
+        //设置图片尺寸
+        setPictureViewWH(holder.mImg_content);
+
+        //设置删除按钮尺寸
+        setDeleteViewWH(holder.mImg_clear);
+
         final PictureEntity pictureEntity = data.get(position);
         final GPDeletePicture gpDeletePicture = mGPOptions.getGPDeletePicture();
         final GPAddPicture gpAddPicture = mGPOptions.getGPAddPicture();
         final GPFrame gpFrame = mGPOptions.getGPFrame();
-        GPLoadPicture gpLoadPicture = mGPOptions.getGPLoadPicture();
-        if (gpLoadPicture == null) {
-            gpLoadPicture = new GPLoadPicture();
-            mGPOptions.setGPLoadPicture(gpLoadPicture);
-        }
+        final GPLoadPicture gpLoadPicture = mGPOptions.getGPLoadPicture();
 
+        //是否显示删除图标
         if (gpDeletePicture == null || !gpDeletePicture.isShowDelete() || pictureEntity.isAdd()) {
             holder.mImg_clear.setVisibility(View.GONE);
         } else {
@@ -72,29 +78,30 @@ import java.util.List;
         }
 
 
+        //获取图片类型
         String pictureType = pictureEntity.getPictureType();
         if (TextUtils.isEmpty(pictureType))
             return;
 
-        if ("pictureFile".equalsIgnoreCase(pictureType)) {//图片文件
+        if (PictureEntity.PICTURE_TYPE_FILE.equalsIgnoreCase(pictureType)) {//图片文件
 
-        } else if ("picturePath".equalsIgnoreCase(pictureType)) {//图片路径
+        } else if (PictureEntity.PICTURE_TYPE_PATH.equalsIgnoreCase(pictureType)) {//图片路径
 
             String picturePath = pictureEntity.getPicturePath();
             if (picturePath.startsWith("http://")) { //网络照片
-
-                GlideApp.with(context).load(TextUtils.isEmpty(picturePath) ? gpLoadPicture.getDefaultPicture() : picturePath)
+//GridPictureView.getLoaderPictureStrategy().request(context,picturePath,holder.mImg_content,requestOptions);
+                Glide.with(context).load(TextUtils.isEmpty(picturePath) ? gpLoadPicture.getDefaultPicture() : picturePath)
                         .apply(requestOptions)
                         .into(holder.mImg_content);
             } else { //本地照片
-                GlideApp.with(context).load(TextUtils.isEmpty(picturePath) ? gpLoadPicture.getDefaultPicture() : Uri.fromFile(new File(picturePath)))
+                Glide.with(context).load(TextUtils.isEmpty(picturePath) ? gpLoadPicture.getDefaultPicture() : Uri.fromFile(new File(picturePath)))
                         .apply(requestOptions)
 
                         .into(holder.mImg_content);
             }
 
-        } else if ("pictureResource".equalsIgnoreCase(pictureType)) {//本地资源图片
-            GlideApp.with(context).load(pictureEntity.getPictureResource())
+        } else if (PictureEntity.PICTURE_TYPE_RESOURCE.equalsIgnoreCase(pictureType)) {//本地资源图片
+            Glide.with(context).load(pictureEntity.getPictureResource())
                     .apply(requestOptions)
                     .into(holder.mImg_content);
         }
@@ -126,6 +133,51 @@ import java.util.List;
         });
 
 
+    }
+
+    /**
+     * 设置图片 宽度、高度
+     *
+     * @param imageView
+     */
+    private void setPictureViewWH(ImageView imageView) {
+        GPFrame gpFrame = mGPOptions.getGPFrame();
+        if (gpFrame == null)
+            gpFrame = new GPFrame();
+
+        ViewGroup.LayoutParams params = imageView.getLayoutParams();
+        params.height = dip2px(gpFrame.getPictureHeight());
+        params.width = dip2px(gpFrame.getPictureWidth());
+
+        //根据删除按钮 设置imageView Padding
+        final GPDeletePicture gpDeletePicture = mGPOptions.getGPDeletePicture();
+        int pictureWidth = dip2px(gpDeletePicture.getPictureWidth());
+        int pictureHeight = dip2px(gpDeletePicture.getPictureHeight());
+        imageView.setPadding(0, pictureHeight / 3, pictureWidth / 3, 0);
+    }
+
+
+    /**
+     * 设置删除按钮 宽度、高度
+     *
+     * @param imageView
+     */
+    private void setDeleteViewWH(ImageView imageView) {
+        GPDeletePicture gpDeletePicture = mGPOptions.getGPDeletePicture();
+        if (gpDeletePicture == null)
+            gpDeletePicture = new GPDeletePicture();
+
+        ViewGroup.LayoutParams params = imageView.getLayoutParams();
+        params.height = dip2px(gpDeletePicture.getPictureHeight());
+        params.width = dip2px(gpDeletePicture.getPictureWidth());
+    }
+
+    /**
+     * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
+     */
+    public int dip2px(float dpValue) {
+        float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
     }
 
     public void addData(PictureEntity entity) {
@@ -191,11 +243,7 @@ import java.util.List;
         }
 
         if (!lasIsAddShow) {//最后一个非新增图标 并且 需要显示新增图标
-            PictureEntity pictureEntity = new PictureEntity();
-            pictureEntity.setPictureResource(mGPOptions.getGPAddPicture().getAddResource());
-            pictureEntity.setPictureType("pictureResource");
-            pictureEntity.setAdd(true);
-
+            PictureEntity pictureEntity = new PictureEntity(mGPOptions.getGPAddPicture().getAddResource(), true);
             addData(data.size(), pictureEntity);
         }
 
@@ -219,33 +267,24 @@ import java.util.List;
 
 
     public void setGPOptions(GPOptions options) {
-        this.mGPOptions = options;
-
-        GPLoadPicture gpLoadPicture = mGPOptions.getGPLoadPicture();
-        if (gpLoadPicture == null) {
-            gpLoadPicture = new GPLoadPicture();
-            mGPOptions.setGPLoadPicture(gpLoadPicture);
-        }
+        mGPOptions = options;
 
         //设置加载 参数
         requestOptions.centerCrop()
 //                .diskCacheStrategy(DiskCacheStrategy.NONE)//禁用硬盘缓存
-                .placeholder(gpLoadPicture.getDefaultPicture())
+                .placeholder(mGPOptions.getGPLoadPicture().getDefaultPicture())
                 .override(Target.SIZE_ORIGINAL)            //显示原始图片大小
-                .error(gpLoadPicture.getLoadErrorPicture());//图片加载失败后，显示的图片
+                .error(mGPOptions.getGPLoadPicture().getLoadErrorPicture());//图片加载失败后，显示的图片
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView mImg_content;
         private ImageView mImg_clear;
-        private FrameLayout mFrameLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
             mImg_content = itemView.findViewById(R.id.item_gridPictureAdapter_img_content);
             mImg_clear = itemView.findViewById(R.id.item_gridPictureAdapter_img_clear);
-            mFrameLayout = itemView.findViewById(R.id.item_gridPictureAdapter_frameLayout);
-
         }
     }
 }

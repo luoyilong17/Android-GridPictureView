@@ -13,15 +13,18 @@ package com.lyl.gridPictureViewLib;
 
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
+import com.bumptech.glide.Glide;
 import com.lyl.gridPictureViewLib.options.GPAddPicture;
 import com.lyl.gridPictureViewLib.options.GPDeletePicture;
 import com.lyl.gridPictureViewLib.options.GPFrame;
+import com.lyl.gridPictureViewLib.options.GPLoadPicture;
 import com.lyl.gridPictureViewLib.options.GPOptions;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
@@ -35,7 +38,6 @@ public class GridPictureView extends RecyclerView implements GridPicture {
     private Context mContext;
     private GPOptions mGPOptions;
     private GridPictureAdapter mGridPictureAdapter;
-//    private List<T> data=new ArrayList<>();
 
     public GridPictureView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -55,10 +57,8 @@ public class GridPictureView extends RecyclerView implements GridPicture {
     public void addPicture(int resId) {
         if (mGridPictureAdapter == null)
             return;
-        PictureEntity pictureEntity = new PictureEntity();
-        pictureEntity.setPictureType("pictureResource");
-        pictureEntity.setPictureResource(resId);
-        this.mGridPictureAdapter.addData(pictureEntity);
+        PictureEntity pictureEntity = new PictureEntity(resId, false);
+        mGridPictureAdapter.addData(pictureEntity);
 
     }
 
@@ -66,9 +66,7 @@ public class GridPictureView extends RecyclerView implements GridPicture {
     public void addPicture(String path) {
         if (mGridPictureAdapter == null)
             return;
-        PictureEntity pictureEntity = new PictureEntity();
-        pictureEntity.setPictureType("picturePath");
-        pictureEntity.setPicturePath(path);
+        PictureEntity pictureEntity = new PictureEntity(path, false);
         mGridPictureAdapter.addData(pictureEntity);
     }
 
@@ -80,6 +78,13 @@ public class GridPictureView extends RecyclerView implements GridPicture {
         mGridPictureAdapter.removeData(position);
     }
 
+    @Override
+    public void clearDiskCache() {
+
+        //清除磁盘缓存
+        Glide.get(mContext).clearDiskCache();
+    }
+
 
     public GPOptions getGPOptions() {
         return mGPOptions;
@@ -88,91 +93,96 @@ public class GridPictureView extends RecyclerView implements GridPicture {
     public void setGPOptions(@NonNull GPOptions options) {
         if (options == null)
             return;
-        this.mGPOptions = options;
-        initOptions();
+        mGPOptions = options;
+        //检查Options初始化值
+        mGPOptions.checkInitOptions();
+
+        //设置视图列数及下划线
+        setViewSpanCountOrItemDecoration(mGPOptions);
+
+        //初始化适配器
+        initAdapter(mGPOptions);
+
+        //检查是否显示新增图标
+        checkAddPicture(mGPOptions);
     }
 
 
     /**
-     * 初始化Options
+     * 设置行显示最大列数
      */
-    private void initOptions() {
-
+    private void setViewSpanCountOrItemDecoration(GPOptions gPOptions) {
         //设置FRAME 默认参数
-        GPFrame gpFrame = mGPOptions.getGPFrame();
+        GPFrame gpFrame = gPOptions.getGPFrame();
         if (gpFrame == null)
             gpFrame = new GPFrame();
-        if (gpFrame.getLayoutManager() == null)
-            gpFrame.setLayoutManager(new GridLayoutManager(mContext, 4));
-        if (gpFrame.getItemDecoration() == null)
-            gpFrame.setItemDecoration(new HorizontalDividerItemDecoration.Builder(mContext)
-                    .showLastDivider().size(1).build());
-        super.setLayoutManager(gpFrame.getLayoutManager());
-//        super.addItemDecoration(gpFrame.getItemDecoration());
 
-        mGPOptions.setGPFrame(gpFrame);
+        if (gPOptions.getGPFrame().getItemDecoration() != null)
+            super.addItemDecoration(gpFrame.getItemDecoration());
 
-        //设置AddPicture 默认参数
-        GPAddPicture gpAddPicture = mGPOptions.getGPAddPicture();
-        if (gpAddPicture == null)
-            gpAddPicture = new GPAddPicture();
-        if (gpAddPicture.getAddResource() == 0)
-            gpAddPicture.setAddResource(R.mipmap.ic_photo_add);
-        mGPOptions.setGPAddPicture(gpAddPicture);
-
-        //设置DeletePicture 默认参数
-        GPDeletePicture gpDeletePicture = mGPOptions.getGPDeletePicture();
-        if (gpDeletePicture == null)
-            gpDeletePicture = new GPDeletePicture();
-        if (gpDeletePicture.getDeleteResource() == 0)
-            gpDeletePicture.setDeleteResource(R.mipmap.ic_photo_del);
-        mGPOptions.setGPDeletePicture(gpDeletePicture);
+        super.setLayoutManager(new GridLayoutManager(mContext, gpFrame.getRowCount()));
+    }
 
 
+    /**
+     * 初始化适配器
+     *
+     * @param options 参数
+     */
+    private void initAdapter(GPOptions options) {
         //适配器
         if (mGridPictureAdapter == null) {
             mGridPictureAdapter = new GridPictureAdapter(mContext, new ArrayList<PictureEntity>());
             super.setAdapter(mGridPictureAdapter);
         }
-        mGridPictureAdapter.setGPOptions(this.mGPOptions);
+        mGridPictureAdapter.setGPOptions(options);
+    }
+
+
+    /**
+     * 根据options 判断是否显新增图标
+     *
+     * @param options
+     */
+    private void checkAddPicture(GPOptions options) {
+
+        //设置FRAME 默认参数
+        GPFrame gpFrame = options.getGPFrame();
+        if (gpFrame == null)
+            gpFrame = new GPFrame();
 
         int maxCount = gpFrame.getMaxCount();
-        int size = mGridPictureAdapter.getData().size();
+        int dataSize = 0;
+        if (mGridPictureAdapter != null)
+            dataSize = mGridPictureAdapter.getData().size();
+
+        GPAddPicture gpAddPicture = options.getGPAddPicture();
+        if (gpAddPicture == null)
+            gpAddPicture = new GPAddPicture();
 
         if (gpAddPicture.isShowAdd()) {//显示新增按钮
-            PictureEntity pictureEntity = getAddPictureEntity(gpAddPicture.getAddResource());
-            if (size < maxCount) {
-                if (size > 0) {
-                    PictureEntity lasPictureEntity = mGridPictureAdapter.getData().get(size - 1);
+            PictureEntity pictureEntity = new PictureEntity(gpAddPicture.getAddResource(), true);
+            if (dataSize < maxCount) {
+                if (dataSize > 0) {
+                    PictureEntity lasPictureEntity = mGridPictureAdapter.getData().get(dataSize - 1);
                     if (!lasPictureEntity.isAdd())//最后一个添加为 新增
-                        mGridPictureAdapter.addData(size, pictureEntity);
+                        mGridPictureAdapter.addData(dataSize, pictureEntity);
                 } else {//等于0,第一个添加为 新增
                     mGridPictureAdapter.addData(0, pictureEntity);
                 }
             }
-
         } else {//不显示新增加按钮
-            if (size > 0) {
-                PictureEntity lasPictureEntity = mGridPictureAdapter.getData().get(size - 1);
+            if (dataSize > 0) {
+                PictureEntity lasPictureEntity = mGridPictureAdapter.getData().get(dataSize - 1);
                 if (lasPictureEntity.isAdd())//最后一个添加为 新增
-                    removePicture(size - 1);
+                    removePicture(dataSize - 1);
             }
-
         }
 
         //为了使设置参数 生效需要刷新适配器
         mGridPictureAdapter.notifyDataSetChanged();
     }
 
-    //实例一个 新增 图标实体
-    private PictureEntity getAddPictureEntity(int resId) {
-        PictureEntity pictureEntity = new PictureEntity();
-        pictureEntity.setPictureResource(resId);
-        pictureEntity.setPictureType("pictureResource");
-        pictureEntity.setAdd(true);
-
-        return pictureEntity;
-    }
 
     @Override
     public void setAdapter(Adapter adapter) {
@@ -187,5 +197,14 @@ public class GridPictureView extends RecyclerView implements GridPicture {
     @Override
     public void addItemDecoration(ItemDecoration decor) {
 
+    }
+
+    private static LoaderPictureStrategy mStrategy;
+    public static void setLoaderStrategy(LoaderPictureStrategy strategy) {
+        mStrategy = strategy;
+    }
+
+    public static LoaderPictureStrategy getLoaderPictureStrategy() {
+        return mStrategy;
     }
 }

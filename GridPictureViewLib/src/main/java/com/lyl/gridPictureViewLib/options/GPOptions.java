@@ -2,6 +2,7 @@ package com.lyl.gridPictureViewLib.options;
 
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.GridLayoutManager;
 
 /**
  * 所有参数设置
@@ -25,6 +26,7 @@ public class GPOptions {
 
 
     public GPOptions() {
+
     }
 
     public GPFrame getGPFrame() {
@@ -69,5 +71,27 @@ public class GPOptions {
     public GPOptions setGPLoadPicture(GPLoadPicture loadPicture) {
         this.mGPLoadPicture = loadPicture;
         return this;
+    }
+
+
+    /**
+     * 检查 Options 初始值
+     */
+    public void checkInitOptions() {
+        //设置FRAME 默认参数
+        if (mGPFrame == null)
+            mGPFrame = new GPFrame();
+
+        //设置AddPicture 默认参数
+        if (mGPAddPicture == null)
+            mGPAddPicture = new GPAddPicture();
+
+        //设置DeletePicture 默认参数
+        if (mGPDeletePicture == null)
+            mGPDeletePicture = new GPDeletePicture();
+
+        //设置加载 GPLoadPicture 默认参数
+        if (mGPLoadPicture == null)
+            mGPLoadPicture = new GPLoadPicture();
     }
 }

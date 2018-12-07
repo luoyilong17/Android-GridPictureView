@@ -15,9 +15,8 @@
             android:id="@+id/item_gridPictureAdapter_img_content"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:padding="6dp"
             android:scaleType="fitXY"
-            android:paddingTop="6dp"
-            android:paddingRight="6dp"
             android:src="@mipmap/default_photo" />
 
         <ImageView
