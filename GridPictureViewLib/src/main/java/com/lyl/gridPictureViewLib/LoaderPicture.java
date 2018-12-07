@@ -6,7 +6,7 @@ import android.widget.ImageView;
 /**
  * Created by hupei on 2018/12/7 15:33.
  */
-class LoaderPicture<T> implements LoaderPictureStrategy<T> {
+class LoaderPicture implements LoaderPictureStrategy {
 
     private LoaderPictureStrategy mStrategy;
 
@@ -15,7 +15,7 @@ class LoaderPicture<T> implements LoaderPictureStrategy<T> {
     }
 
     @Override
-    public void request(Context context, String url, ImageView imageView, T options) {
-        mStrategy.request(context, url, imageView, options);
+    public void request(Context context, String url, ImageView imageView) {
+        mStrategy.request(context, url, imageView);
     }
 }
