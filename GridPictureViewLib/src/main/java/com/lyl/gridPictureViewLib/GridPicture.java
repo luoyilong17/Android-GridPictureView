@@ -39,8 +39,4 @@ public interface GridPicture {
      */
     void removePicture(int position);
 
-    /**
-     * 清除图片缓存
-     */
-    void clearDiskCache();
 }

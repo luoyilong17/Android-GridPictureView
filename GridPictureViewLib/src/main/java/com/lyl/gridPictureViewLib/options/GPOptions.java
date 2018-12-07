@@ -21,10 +21,6 @@ public class GPOptions {
     //删除 参数
     private GPDeletePicture mGPDeletePicture;
 
-    //加载 参数
-    private GPLoadPicture mGPLoadPicture;
-
-
     public GPOptions() {
 
     }
@@ -62,17 +58,6 @@ public class GPOptions {
         return this;
     }
 
-    public GPLoadPicture getGPLoadPicture() {
-        return mGPLoadPicture;
-    }
-
-    @NonNull
-    @CheckResult
-    public GPOptions setGPLoadPicture(GPLoadPicture loadPicture) {
-        this.mGPLoadPicture = loadPicture;
-        return this;
-    }
-
 
     /**
      * 检查 Options 初始值
@@ -89,9 +74,5 @@ public class GPOptions {
         //设置DeletePicture 默认参数
         if (mGPDeletePicture == null)
             mGPDeletePicture = new GPDeletePicture();
-
-        //设置加载 GPLoadPicture 默认参数
-        if (mGPLoadPicture == null)
-            mGPLoadPicture = new GPLoadPicture();
     }
 }

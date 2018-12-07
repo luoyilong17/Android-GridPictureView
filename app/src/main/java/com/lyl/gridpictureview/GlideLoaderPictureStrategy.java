@@ -24,6 +24,8 @@ public class GlideLoaderPictureStrategy implements LoaderPictureStrategy {
 
     @Override
     public void request(Context context, String url, ImageView imageView) {
-        Glide.with(context).load(url).into(imageView);
+        Glide.with(context).load(url)
+//                .apply(requestOptions)
+                .into(imageView);
     }
 }

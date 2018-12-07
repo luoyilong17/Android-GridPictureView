@@ -1,28 +1,19 @@
-
 package com.lyl.gridPictureViewLib;
 
 import android.content.Context;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
 import com.lyl.gridPictureViewLib.options.GPAddPicture;
 import com.lyl.gridPictureViewLib.options.GPDeletePicture;
 import com.lyl.gridPictureViewLib.options.GPFrame;
-import com.lyl.gridPictureViewLib.options.GPLoadPicture;
 import com.lyl.gridPictureViewLib.options.GPOptions;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +27,6 @@ class GridPictureAdapter extends RecyclerView.Adapter<GridPictureAdapter.ViewHol
     private Context context;
     private List<PictureEntity> data;
     private GPOptions mGPOptions;
-    private RequestOptions requestOptions = new RequestOptions();
 
     public GridPictureAdapter(Context context, List<PictureEntity> entityList) {
         this.context = context;
@@ -67,7 +57,6 @@ class GridPictureAdapter extends RecyclerView.Adapter<GridPictureAdapter.ViewHol
         final GPDeletePicture gpDeletePicture = mGPOptions.getGPDeletePicture();
         final GPAddPicture gpAddPicture = mGPOptions.getGPAddPicture();
         final GPFrame gpFrame = mGPOptions.getGPFrame();
-        final GPLoadPicture gpLoadPicture = mGPOptions.getGPLoadPicture();
 
         //是否显示删除图标
         if (gpDeletePicture == null || !gpDeletePicture.isShowDelete() || pictureEntity.isAdd()) {
@@ -86,24 +75,13 @@ class GridPictureAdapter extends RecyclerView.Adapter<GridPictureAdapter.ViewHol
         if (PictureEntity.PICTURE_TYPE_FILE.equalsIgnoreCase(pictureType)) {//图片文件
 
         } else if (PictureEntity.PICTURE_TYPE_PATH.equalsIgnoreCase(pictureType)) {//图片路径
-
             String picturePath = pictureEntity.getPicturePath();
-            if (picturePath.startsWith("http://")) { //网络照片
-//GridPictureView.getLoaderPictureStrategy().request(context,picturePath,holder.mImg_content,requestOptions);
-                Glide.with(context).load(TextUtils.isEmpty(picturePath) ? gpLoadPicture.getDefaultPicture() : picturePath)
-                        .apply(requestOptions)
-                        .into(holder.mImg_content);
-            } else { //本地照片
-                Glide.with(context).load(TextUtils.isEmpty(picturePath) ? gpLoadPicture.getDefaultPicture() : Uri.fromFile(new File(picturePath)))
-                        .apply(requestOptions)
-
-                        .into(holder.mImg_content);
-            }
-
+            GridPictureView.getLoaderPictureStrategy().request(context
+                    , picturePath, holder.mImg_content);
         } else if (PictureEntity.PICTURE_TYPE_RESOURCE.equalsIgnoreCase(pictureType)) {//本地资源图片
-            Glide.with(context).load(pictureEntity.getPictureResource())
-                    .apply(requestOptions)
-                    .into(holder.mImg_content);
+            holder.mImg_content.setImageResource(pictureEntity.getPictureResource());
+//            GridPictureView.getLoaderPictureStrategy().request(context
+//                    , pictureEntity.getPictureResource(), holder.mImg_content);
         }
 
         //图片点击事件
@@ -180,12 +158,16 @@ class GridPictureAdapter extends RecyclerView.Adapter<GridPictureAdapter.ViewHol
         return (int) (dpValue * scale + 0.5f);
     }
 
-    public void addData(PictureEntity entity) {
-        addData(0, entity);
+    @Override
+    public int getItemCount() {
+        if (data == null)
+            data = new ArrayList<>();
+
+        return data.size();
     }
 
-    public List<PictureEntity> getData() {
-        return data;
+    public void addData(PictureEntity entity) {
+        addData(0, entity);
     }
 
     public void addData(int position, PictureEntity t) {
@@ -211,6 +193,17 @@ class GridPictureAdapter extends RecyclerView.Adapter<GridPictureAdapter.ViewHol
         }
     }
 
+    public List<PictureEntity> getData() {
+        return data;
+    }
+
+//    public void addAllData(List<PictureEntity> list) {
+//        data.addAll(list);
+//    }
+//
+//    public void addAllData(int position, List<PictureEntity> list) {
+//        data.addAll(position, list);
+//    }
 
     /**
      * 指定索引删除数据
@@ -249,32 +242,8 @@ class GridPictureAdapter extends RecyclerView.Adapter<GridPictureAdapter.ViewHol
 
     }
 
-//    public void addAllData(List<PictureEntity> list) {
-//        data.addAll(list);
-//    }
-//
-//    public void addAllData(int position, List<PictureEntity> list) {
-//        data.addAll(position, list);
-//    }
-
-    @Override
-    public int getItemCount() {
-        if (data == null)
-            data = new ArrayList<>();
-
-        return data.size();
-    }
-
-
     public void setGPOptions(GPOptions options) {
         mGPOptions = options;
-
-        //设置加载 参数
-        requestOptions.centerCrop()
-//                .diskCacheStrategy(DiskCacheStrategy.NONE)//禁用硬盘缓存
-                .placeholder(mGPOptions.getGPLoadPicture().getDefaultPicture())
-                .override(Target.SIZE_ORIGINAL)            //显示原始图片大小
-                .error(mGPOptions.getGPLoadPicture().getLoadErrorPicture());//图片加载失败后，显示的图片
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

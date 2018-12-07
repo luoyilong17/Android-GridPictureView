@@ -13,20 +13,15 @@ package com.lyl.gridPictureViewLib;
 
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
-import com.bumptech.glide.Glide;
 import com.lyl.gridPictureViewLib.options.GPAddPicture;
-import com.lyl.gridPictureViewLib.options.GPDeletePicture;
 import com.lyl.gridPictureViewLib.options.GPFrame;
-import com.lyl.gridPictureViewLib.options.GPLoadPicture;
 import com.lyl.gridPictureViewLib.options.GPOptions;
-import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -77,14 +72,6 @@ public class GridPictureView extends RecyclerView implements GridPicture {
 
         mGridPictureAdapter.removeData(position);
     }
-
-    @Override
-    public void clearDiskCache() {
-
-        //清除磁盘缓存
-        Glide.get(mContext).clearDiskCache();
-    }
-
 
     public GPOptions getGPOptions() {
         return mGPOptions;
