@@ -38,4 +38,10 @@ public interface GridPicture {
      */
     void removePicture(int position);
 
+    /**
+     * 图片加载
+     * @param strategy
+     */
+    void setLoaderStrategy(LoaderPictureStrategy strategy);
+
 }

@@ -26,10 +26,11 @@ import com.lyl.gridPictureViewLib.options.GPOptions;
 import java.io.File;
 import java.util.ArrayList;
 
-/** */
+/**
+ * 九宫格图片展示视图
+ */
 public class GridPictureView extends RecyclerView implements GridPicture {
 
-    /** */
     private Context mContext;
     private GPOptions mGPOptions;
     private GridPictureAdapter mGridPictureAdapter;
@@ -64,6 +65,7 @@ public class GridPictureView extends RecyclerView implements GridPicture {
 
         mGridPictureAdapter.removeData(position);
     }
+
 
     public GPOptions getGPOptions() {
         return mGPOptions;
@@ -179,6 +181,13 @@ public class GridPictureView extends RecyclerView implements GridPicture {
     }
 
     private static LoaderPictureStrategy mStrategy;
+
+    @Override
+    public void setLoaderStrategy(LoaderPictureStrategy strategy) {
+        mStrategy = strategy;
+    }
+
+    //全局调用
     public static void setGlobalLoaderStrategy(LoaderPictureStrategy strategy) {
         mStrategy = strategy;
     }

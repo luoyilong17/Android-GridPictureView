@@ -24,12 +24,12 @@ import java.util.List;
  */
 class GridPictureAdapter extends RecyclerView.Adapter<GridPictureAdapter.ViewHolder> {
 
-    private Context context;
+    private Context mContext;
     private List<PictureEntity> data;
     private GPOptions mGPOptions;
 
     public GridPictureAdapter(Context context, List<PictureEntity> entityList) {
-        this.context = context;
+        this.mContext = context;
         if (entityList == null)
             entityList = new ArrayList<>();
         this.data = entityList;
@@ -38,7 +38,7 @@ class GridPictureAdapter extends RecyclerView.Adapter<GridPictureAdapter.ViewHol
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_grid_picture_adapter, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_grid_picture_adapter, parent, false);
         return new ViewHolder(view);
 
     }
@@ -76,7 +76,7 @@ class GridPictureAdapter extends RecyclerView.Adapter<GridPictureAdapter.ViewHol
             String picturePath = pictureEntity.getPicturePath();
             LoaderPictureStrategy loaderPictureStrategy = GridPictureView.getLoaderPictureStrategy();
             if (loaderPictureStrategy != null)
-                loaderPictureStrategy.request(context, picturePath, holder.mImg_content);
+                loaderPictureStrategy.request(mContext, picturePath, holder.mImg_content);
         } else if (PictureEntity.PICTURE_TYPE_RESOURCE.equalsIgnoreCase(pictureType)) {//本地资源图片
             holder.mImg_content.setImageResource(pictureEntity.getPictureResource());
         }
@@ -151,7 +151,7 @@ class GridPictureAdapter extends RecyclerView.Adapter<GridPictureAdapter.ViewHol
      * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
      */
     public int dip2px(float dpValue) {
-        float scale = context.getResources().getDisplayMetrics().density;
+        float scale = mContext.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
 
