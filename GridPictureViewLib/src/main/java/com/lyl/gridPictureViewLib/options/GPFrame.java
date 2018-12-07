@@ -3,7 +3,7 @@ package com.lyl.gridPictureViewLib.options;
 
 import android.support.v7.widget.RecyclerView;
 
-import com.lyl.gridPictureViewLib.common.OnPictureClickListener;
+import com.lyl.gridPictureViewLib.OnPictureClickListener;
 
 /**
  * 显示布局参数

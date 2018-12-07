@@ -3,7 +3,7 @@ package com.lyl.gridPictureViewLib.options;
 import android.support.annotation.DrawableRes;
 
 import com.lyl.gridPictureViewLib.R;
-import com.lyl.gridPictureViewLib.common.OnDeleteClickListener;
+import com.lyl.gridPictureViewLib.OnDeleteClickListener;
 
 /**
  * 删除图标参数

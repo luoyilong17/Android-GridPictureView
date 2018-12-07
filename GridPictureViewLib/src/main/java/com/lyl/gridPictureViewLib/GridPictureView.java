@@ -9,7 +9,7 @@
 //
 //
 
-package com.lyl.gridPictureViewLib.view;
+package com.lyl.gridPictureViewLib;
 
 
 import android.content.Context;
@@ -19,9 +19,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
-import com.lyl.gridPictureViewLib.R;
-import com.lyl.gridPictureViewLib.adapter.GridPictureAdapter;
-import com.lyl.gridPictureViewLib.bean.PictureEntity;
 import com.lyl.gridPictureViewLib.options.GPAddPicture;
 import com.lyl.gridPictureViewLib.options.GPDeletePicture;
 import com.lyl.gridPictureViewLib.options.GPFrame;
@@ -30,7 +27,6 @@ import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 /** */
 public class GridPictureView extends RecyclerView implements GridPicture {

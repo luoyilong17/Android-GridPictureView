@@ -1,5 +1,5 @@
 
-package com.lyl.gridPictureViewLib.adapter;
+package com.lyl.gridPictureViewLib;
 
 import android.content.Context;
 import android.net.Uri;
@@ -13,8 +13,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
-import com.lyl.gridPictureViewLib.R;
-import com.lyl.gridPictureViewLib.bean.PictureEntity;
 import com.lyl.gridPictureViewLib.glide.GlideApp;
 import com.lyl.gridPictureViewLib.options.GPAddPicture;
 import com.lyl.gridPictureViewLib.options.GPDeletePicture;
@@ -31,7 +29,7 @@ import java.util.List;
  *
  * @ Date 2018-12-04
  */
-public class GridPictureAdapter extends RecyclerView.Adapter<GridPictureAdapter.ViewHolder> {
+ class GridPictureAdapter extends RecyclerView.Adapter<GridPictureAdapter.ViewHolder> {
 
     private Context context;
     private List<PictureEntity> data;

@@ -3,26 +3,20 @@ package com.lyl.gridpictureview;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
-import android.provider.Settings;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.Toast;
 
-import com.lyl.gridPictureViewLib.common.OnAddClickListener;
-import com.lyl.gridPictureViewLib.common.OnDeleteClickListener;
-import com.lyl.gridPictureViewLib.common.OnPictureClickListener;
+import com.lyl.gridPictureViewLib.GridPictureView;
+import com.lyl.gridPictureViewLib.OnAddClickListener;
+import com.lyl.gridPictureViewLib.OnDeleteClickListener;
 import com.lyl.gridPictureViewLib.options.GPAddPicture;
 import com.lyl.gridPictureViewLib.options.GPDeletePicture;
-import com.lyl.gridPictureViewLib.options.GPFrame;
-import com.lyl.gridPictureViewLib.options.GPLoadPicture;
 import com.lyl.gridPictureViewLib.options.GPOptions;
-import com.lyl.gridPictureViewLib.view.GridPictureView;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 public class MainActivity extends AppCompatActivity {
@@ -165,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         mGridPictureView.setGPOptions(gpOptions);
     }
 
-    
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

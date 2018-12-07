@@ -9,7 +9,7 @@
 //
 //
 
-package com.lyl.gridPictureViewLib.common;
+package com.lyl.gridPictureViewLib;
 
 
 import android.view.View;

@@ -10,7 +10,7 @@
 //
 
 
-package com.lyl.gridPictureViewLib.view;
+package com.lyl.gridPictureViewLib;
 
 import java.io.File;
 

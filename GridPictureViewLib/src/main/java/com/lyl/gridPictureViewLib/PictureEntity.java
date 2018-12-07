@@ -1,4 +1,4 @@
-package com.lyl.gridPictureViewLib.bean;
+package com.lyl.gridPictureViewLib;
 
 import java.io.File;
 
@@ -8,8 +8,7 @@ import java.io.File;
  * @author luoyilong
  * @date on 2018/12/5
  **/
-public class PictureEntity {
-
+class PictureEntity {
     private String pictureType;//图片类型 pictureFile\picturePath\pictureResource
     private File pictureFile;//文件
     private String picturePath;//路径

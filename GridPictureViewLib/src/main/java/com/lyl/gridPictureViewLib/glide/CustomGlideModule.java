@@ -9,7 +9,6 @@ import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.cache.DiskLruCacheFactory;
 import com.bumptech.glide.module.AppGlideModule;
 import com.bumptech.glide.request.target.ViewTarget;
-import com.lyl.gridPictureViewLib.GPApplication;
 import com.lyl.gridPictureViewLib.R;
 
 import java.io.File;
@@ -35,7 +34,7 @@ public class CustomGlideModule extends AppGlideModule {
         builder.setDecodeFormat(DecodeFormat.PREFER_ARGB_8888);
         //设置磁盘缓存目录（和创建的缓存目录相同）
         File result = new File(Environment.getExternalStorageDirectory(),
-                "Android/data/" + GPApplication.app().getPackageName() + "/cache/GlideCache");
+                "Android/data/" + context.getPackageName() + "/cache/GlideCache");
 
         String diskCacheFolder = result.getPath();
         //默认硬盘缓存大小都是250M,这里改为500

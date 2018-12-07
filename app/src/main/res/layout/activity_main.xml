@@ -39,7 +39,7 @@
     </RelativeLayout>
 
 
-    <com.lyl.gridPictureViewLib.view.GridPictureView
+    <com.lyl.gridPictureViewLib.GridPictureView
         android:id="@+id/grid_picture"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

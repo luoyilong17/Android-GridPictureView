@@ -3,7 +3,7 @@ package com.lyl.gridPictureViewLib.options;
 import android.support.annotation.DrawableRes;
 
 import com.lyl.gridPictureViewLib.R;
-import com.lyl.gridPictureViewLib.common.OnAddClickListener;
+import com.lyl.gridPictureViewLib.OnAddClickListener;
 
 /**
  * 新增图标 参数
