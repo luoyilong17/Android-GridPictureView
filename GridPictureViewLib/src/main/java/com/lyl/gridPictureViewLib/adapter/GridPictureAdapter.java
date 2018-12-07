@@ -11,14 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.lyl.gridPictureViewLib.R;
 import com.lyl.gridPictureViewLib.bean.PictureEntity;
 import com.lyl.gridPictureViewLib.glide.GlideApp;
-import com.lyl.gridPictureViewLib.loader.GridPictureLoader;
 import com.lyl.gridPictureViewLib.options.GPAddPicture;
 import com.lyl.gridPictureViewLib.options.GPDeletePicture;
 import com.lyl.gridPictureViewLib.options.GPFrame;

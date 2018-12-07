@@ -49,7 +49,7 @@ public class GridPictureView extends RecyclerView implements GridPicture {
 
     @Override
     public void addPicture(File file) {
-        if (this.mGridPictureAdapter == null)
+        if (mGridPictureAdapter == null)
             return;
 
 //        this.mGridPictureAdapter.addData(file);
@@ -57,7 +57,7 @@ public class GridPictureView extends RecyclerView implements GridPicture {
 
     @Override
     public void addPicture(int resId) {
-        if (this.mGridPictureAdapter == null)
+        if (mGridPictureAdapter == null)
             return;
         PictureEntity pictureEntity = new PictureEntity();
         pictureEntity.setPictureType("pictureResource");
@@ -68,7 +68,7 @@ public class GridPictureView extends RecyclerView implements GridPicture {
 
     @Override
     public void addPicture(String path) {
-        if (this.mGridPictureAdapter == null)
+        if (mGridPictureAdapter == null)
             return;
         PictureEntity pictureEntity = new PictureEntity();
         pictureEntity.setPictureType("picturePath");
