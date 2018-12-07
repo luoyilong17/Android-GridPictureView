@@ -128,7 +128,7 @@ class GridPictureAdapter extends RecyclerView.Adapter<GridPictureAdapter.ViewHol
         final GPDeletePicture gpDeletePicture = mGPOptions.getGPDeletePicture();
         int pictureWidth = dip2px(gpDeletePicture.getPictureWidth());
         int pictureHeight = dip2px(gpDeletePicture.getPictureHeight());
-        imageView.setPadding(0, pictureHeight / 3, pictureWidth / 3, 0);
+        imageView.setPadding(pictureWidth / 3, pictureHeight / 3, pictureWidth / 3, pictureHeight / 3);
     }
 
 
