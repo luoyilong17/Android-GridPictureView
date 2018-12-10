@@ -14,8 +14,12 @@ package com.lyl.gridPictureViewLib;
 
 import android.view.View;
 
-/** */
+/**
+ * 删除图片回调接口
+ */
 public interface OnDeleteClickListener {
-    /** */
+    /**
+     * 删除图片
+     */
     void onDeleteClick(View view, int position);
 }

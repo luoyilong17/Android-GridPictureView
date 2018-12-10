@@ -5,6 +5,7 @@ import android.widget.ImageView;
 
 /**
  * Created by hupei on 2018/12/7 15:33.
+ * 图片加载回调
  */
 class LoaderPicture implements LoaderPictureStrategy {
 

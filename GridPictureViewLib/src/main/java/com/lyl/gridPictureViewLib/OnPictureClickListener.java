@@ -14,8 +14,12 @@ package com.lyl.gridPictureViewLib;
 
 import android.view.View;
 
-/** */
+/**
+ * 图片点击回调接口
+ */
 public interface OnPictureClickListener {
-    /** */
+    /**
+     * 回调接口
+     */
     void onPictureClick(View view, int position);
 }
