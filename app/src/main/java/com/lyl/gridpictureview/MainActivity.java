@@ -10,12 +10,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 
 import com.lyl.gridPictureViewLib.GridPictureView;
 import com.lyl.gridPictureViewLib.OnAddClickListener;
 import com.lyl.gridPictureViewLib.OnDeleteClickListener;
+import com.lyl.gridPictureViewLib.OnPictureClickListener;
 import com.lyl.gridPictureViewLib.options.GPAddPicture;
 import com.lyl.gridPictureViewLib.options.GPDeletePicture;
+import com.lyl.gridPictureViewLib.options.GPFrame;
 import com.lyl.gridPictureViewLib.options.GPOptions;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
@@ -127,7 +130,8 @@ public class MainActivity extends AppCompatActivity {
                 mGridPictureView.removePicture(position);
             }
         });
-
+//        gpDeletePicture.setPictureHeight(100);
+//        gpDeletePicture.setPictureWidth(100);
 
         GPAddPicture gpAddPicture = new GPAddPicture();
         gpAddPicture.setOnAddClickListener(new OnAddClickListener() {
@@ -138,21 +142,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        GPFrame gpFrame = new GPFrame();
-//        gpFrame.setOnPictureClickListener(new OnPictureClickListener() {
-//            @Override
-//            public void onPictureClick(View view, int position) {
-//                //图标点击事件
-//                Toast.makeText(mActivity, "点击图标:" + position, Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//
+        GPFrame gpFrame = new GPFrame();
+        gpFrame.setOnPictureClickListener(new OnPictureClickListener() {
+            @Override
+            public void onPictureClick(View view, int position) {
+                //图标点击事件
+                Toast.makeText(mActivity, "点击图标:" + (position+1), Toast.LENGTH_SHORT).show();
+            }
+        });
+        gpFrame.setRowCount(3);
+        gpFrame.setPictureHeight(90);
+        gpFrame.setPictureWidth(90);
+
 //        GPLoadPicture gpLoadPicture = new GPLoadPicture();
 
         GPOptions gpOptions = new GPOptions();
         gpOptions.setGPDeletePicture(gpDeletePicture)
-                .setGPAddPicture(gpAddPicture);
-//                .setGPFrame(gpFrame)
+                .setGPAddPicture(gpAddPicture)
+                .setGPFrame(gpFrame);
 //                .setGPLoadPicture(gpLoadPicture);
 
 

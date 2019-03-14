@@ -46,8 +46,9 @@ class GridPictureAdapter extends RecyclerView.Adapter<GridPictureAdapter.ViewHol
 
 
     @Override
-    public void onBindViewHolder(@NonNull GridPictureAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull GridPictureAdapter.ViewHolder holder,  int index) {
 
+        final int position=index;
         //设置图片尺寸
         setPictureViewWH(holder.mImg_content);
 

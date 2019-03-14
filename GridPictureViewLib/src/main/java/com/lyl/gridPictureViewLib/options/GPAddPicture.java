@@ -9,7 +9,6 @@ import com.lyl.gridPictureViewLib.OnAddClickListener;
  * 新增图标 参数
  *
  * @author luoyilong
- * @date on 2018/12/5
  **/
 public class GPAddPicture {
 

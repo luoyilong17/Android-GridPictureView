@@ -9,7 +9,6 @@ import com.lyl.gridPictureViewLib.OnPictureClickListener;
  * 显示布局参数
  *
  * @author luoyilong
- * @date on 2018/12/5
  **/
 public class GPFrame {
 

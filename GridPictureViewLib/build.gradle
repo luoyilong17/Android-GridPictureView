@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion 27
@@ -17,7 +18,19 @@ android {
         }
     }
 
+
 }
+
+
+publish {
+    userOrg = 'luoyilong17'
+    groupId = 'com.lyl.gridpictureview'
+    artifactId = 'gridpictureview'
+    publishVersion = '1.0.0'
+    desc = 'an  Android  gridpictureview'
+    website = 'https://github.com/luoyilong17/Android-GridPictureView'
+}
+
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')

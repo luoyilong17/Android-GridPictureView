@@ -8,7 +8,6 @@ import android.support.v7.widget.GridLayoutManager;
  * 所有参数设置
  *
  * @author luoyilong
- * @date on 2018/12/5
  **/
 public class GPOptions {
 
