@@ -21,5 +21,5 @@ public interface OnPictureClickListener {
     /**
      * 回调接口
      */
-    void onPictureClick(View view, int position);
+    void onPictureClick(View view, int position,String picturePath);
 }

@@ -1,5 +1,7 @@
 package com.lyl.gridPictureViewLib;
 
+import java.util.List;
+
 /**
  * 图片实体
  */
@@ -20,6 +22,13 @@ public interface GridPicture {
     void addPicture(String path);
 
     /**
+     * 添加图片路径
+     *
+     * @param paths
+     */
+    void addPicture(List<String> paths);
+
+    /**
      * 删除指定position 图片
      *
      * @param position
@@ -32,4 +41,9 @@ public interface GridPicture {
      */
     void setLoaderStrategy(LoaderPictureStrategy strategy);
 
+    /**
+     * 获取数据
+     * @return
+     */
+    List<PictureEntity> getData();
 }

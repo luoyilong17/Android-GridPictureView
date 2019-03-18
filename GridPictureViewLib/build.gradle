@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.2"
     }
 
     buildTypes {
@@ -24,9 +24,9 @@ android {
 
 publish {
     userOrg = 'luoyilong17'
-    groupId = 'com.lyl.gridpictureview'
+    groupId = 'com.lyl'
     artifactId = 'gridpictureview'
-    publishVersion = '1.0.0'
+    publishVersion = '1.0.2'
     desc = 'an  Android  gridpictureview'
     website = 'https://github.com/luoyilong17/Android-GridPictureView'
 }

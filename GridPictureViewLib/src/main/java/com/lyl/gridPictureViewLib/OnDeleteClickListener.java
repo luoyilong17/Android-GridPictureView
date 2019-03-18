@@ -21,5 +21,5 @@ public interface OnDeleteClickListener {
     /**
      * 删除图片
      */
-    void onDeleteClick(View view, int position);
+    void onDeleteClick(View view, int position,String picturePath);
 }

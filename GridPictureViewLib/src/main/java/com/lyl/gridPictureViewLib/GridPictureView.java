@@ -25,6 +25,7 @@ import com.lyl.gridPictureViewLib.options.GPOptions;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 九宫格图片展示视图
@@ -57,6 +58,17 @@ public class GridPictureView extends RecyclerView implements GridPicture {
             return;
         PictureEntity pictureEntity = new PictureEntity(path, false);
         mGridPictureAdapter.addData(pictureEntity);
+    }
+
+    @Override
+    public void addPicture(List<String> paths) {
+        if (mGridPictureAdapter == null || paths == null)
+            return;
+
+        for (String path : paths) {
+            PictureEntity pictureEntity = new PictureEntity(path, false);
+            mGridPictureAdapter.addData(pictureEntity);
+        }
     }
 
     @Override
@@ -189,6 +201,25 @@ public class GridPictureView extends RecyclerView implements GridPicture {
         mGridPictureStrategy = strategy;
         if (mGridPictureAdapter != null)
             mGridPictureAdapter.setGridPictureStrategy(mGridPictureStrategy);
+    }
+
+    @Override
+    public List<PictureEntity> getData() {
+
+        List<PictureEntity> pictureEntities = new ArrayList<>();
+
+         //获取数据 减去新增加图标
+        if (mGridPictureAdapter != null) {
+            pictureEntities = mGridPictureAdapter.getData();
+            for (PictureEntity pictureEntity : pictureEntities) {
+                if (pictureEntity.isAdd()) {
+                    pictureEntities.remove(pictureEntity);
+                    break;
+                }
+
+            }
+        }
+        return pictureEntities;
     }
 
     //全局调用

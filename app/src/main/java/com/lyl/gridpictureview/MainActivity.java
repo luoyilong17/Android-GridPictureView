@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         GPDeletePicture gpDeletePicture = new GPDeletePicture();
         gpDeletePicture.setDeleteClickListener(new OnDeleteClickListener() {
             @Override
-            public void onDeleteClick(View view, int position) {
+            public void onDeleteClick(View view, int position,String picturePath) {
                 //删除图标点击事件
                 mGridPictureView.removePicture(position);
             }
@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
         GPFrame gpFrame = new GPFrame();
         gpFrame.setOnPictureClickListener(new OnPictureClickListener() {
             @Override
-            public void onPictureClick(View view, int position) {
+            public void onPictureClick(View view, int position,String picturePath) {
                 //图标点击事件
                 Toast.makeText(mActivity, "点击图标:" + (position+1), Toast.LENGTH_SHORT).show();
             }
@@ -154,13 +154,11 @@ public class MainActivity extends AppCompatActivity {
         gpFrame.setPictureHeight(90);
         gpFrame.setPictureWidth(90);
 
-//        GPLoadPicture gpLoadPicture = new GPLoadPicture();
-
         GPOptions gpOptions = new GPOptions();
         gpOptions.setGPDeletePicture(gpDeletePicture)
                 .setGPAddPicture(gpAddPicture)
                 .setGPFrame(gpFrame);
-//                .setGPLoadPicture(gpLoadPicture);
+
 
 
         mGridPictureView.setGPOptions(gpOptions);

@@ -11,7 +11,7 @@ import java.io.File;
  * @author luoyilong
  * @date on 2018/12/5
  **/
-class PictureEntity {
+public class PictureEntity {
     public static final String PICTURE_TYPE_PATH = "picturePath";
     public static final String PICTURE_TYPE_RESOURCE = "pictureResource";
 

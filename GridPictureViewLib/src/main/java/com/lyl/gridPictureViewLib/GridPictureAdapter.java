@@ -99,7 +99,8 @@ class GridPictureAdapter extends RecyclerView.Adapter<GridPictureAdapter.ViewHol
                     }
                 } else {//非新增图标 点击事件
                     if (gpFrame != null && gpFrame.getOnPictureClickListener() != null) {
-                        gpFrame.getOnPictureClickListener().onPictureClick(view, position);
+                        gpFrame.getOnPictureClickListener().onPictureClick(view, position
+                                ,pictureEntity.getPicturePath());
                     }
                 }
             }
@@ -110,7 +111,8 @@ class GridPictureAdapter extends RecyclerView.Adapter<GridPictureAdapter.ViewHol
             @Override
             public void onClick(View view) {
                 if (gpDeletePicture != null && gpDeletePicture.getDeleteClickListener() != null) {
-                    gpDeletePicture.getDeleteClickListener().onDeleteClick(view, position);
+                    gpDeletePicture.getDeleteClickListener().onDeleteClick(view, position
+                    ,pictureEntity.getPicturePath());
                 }
             }
         });
