@@ -1,17 +1,11 @@
 package com.lyl.gridPictureViewLib;
 
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-
-import java.io.File;
-
 /**
  * 图片实体
  *
  * @author luoyilong
- * @date on 2018/12/5
  **/
-public class PictureEntity {
+class PictureEntity {
     public static final String PICTURE_TYPE_PATH = "picturePath";
     public static final String PICTURE_TYPE_RESOURCE = "pictureResource";
 

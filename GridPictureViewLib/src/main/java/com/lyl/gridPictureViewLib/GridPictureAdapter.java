@@ -46,9 +46,9 @@ class GridPictureAdapter extends RecyclerView.Adapter<GridPictureAdapter.ViewHol
 
 
     @Override
-    public void onBindViewHolder(@NonNull GridPictureAdapter.ViewHolder holder,  int index) {
+    public void onBindViewHolder(@NonNull GridPictureAdapter.ViewHolder holder, int index) {
 
-        final int position=index;
+        final int position = index;
         //设置图片尺寸
         setPictureViewWH(holder.mImg_content);
 
@@ -100,7 +100,7 @@ class GridPictureAdapter extends RecyclerView.Adapter<GridPictureAdapter.ViewHol
                 } else {//非新增图标 点击事件
                     if (gpFrame != null && gpFrame.getOnPictureClickListener() != null) {
                         gpFrame.getOnPictureClickListener().onPictureClick(view, position
-                                ,pictureEntity.getPicturePath());
+                                , pictureEntity.getPicturePath());
                     }
                 }
             }
@@ -112,7 +112,7 @@ class GridPictureAdapter extends RecyclerView.Adapter<GridPictureAdapter.ViewHol
             public void onClick(View view) {
                 if (gpDeletePicture != null && gpDeletePicture.getDeleteClickListener() != null) {
                     gpDeletePicture.getDeleteClickListener().onDeleteClick(view, position
-                    ,pictureEntity.getPicturePath());
+                            , pictureEntity.getPicturePath());
                 }
             }
         });
@@ -173,44 +173,126 @@ class GridPictureAdapter extends RecyclerView.Adapter<GridPictureAdapter.ViewHol
         return data.size();
     }
 
-    public void addData(PictureEntity entity) {
-        addData(0, entity);
+    /**
+     * 添加新增图标
+     */
+    public void addonAddPictureData() {
+
+        if (mGPOptions == null)
+            return;
+
+        GPAddPicture gpAddPicture = mGPOptions.getGPAddPicture();
+        if (gpAddPicture == null)
+            gpAddPicture = new GPAddPicture();
+
+        GPFrame gpFrame = mGPOptions.getGPFrame();
+        if (gpFrame == null)
+            gpFrame = new GPFrame();
+
+        int maxCount = gpFrame.getMaxCount();
+        int size = data.size();
+
+        //新增图标实体
+        PictureEntity t = new PictureEntity(gpAddPicture.getAddResource(), true);
+
+        if (size == 0) {//Grid中无数据直接添加
+            data.add(t);
+            notifyDataSetChanged();
+        } else if (size < maxCount) {//小于最大值
+            PictureEntity pictureEntity = data.get(size - 1);
+            if (!pictureEntity.isAdd()) {//最后一个 为 非新增 图标，则把数据设置进去
+                data.add(t);
+                notifyDataSetChanged();
+            }
+        }
+
     }
 
-    public void addData(int position, PictureEntity t) {
-        if (mGPOptions == null)
+
+    /**
+     * 添加显示图片
+     *
+     * @param resId
+     */
+    public void addPictureData(int resId) {
+        //图片实体
+        PictureEntity t = new PictureEntity(resId, false);
+
+        //添加实体数据
+        addPictureData(t);
+    }
+
+
+    /**
+     * 添加显示图片
+     *
+     * @param path
+     */
+    public void addPictureData(String path) {
+        if (TextUtils.isEmpty(path))
+            return;
+
+        //图片实体
+        PictureEntity t = new PictureEntity(path, false);
+
+        //添加实体数据
+        addPictureData(t);
+    }
+
+    /**
+     * 添加显示图片
+     *
+     * @param t
+     */
+    public void addPictureData(PictureEntity t) {
+        if (mGPOptions == null || t == null)
             return;
 
         GPFrame gpFrame = mGPOptions.getGPFrame();
         int maxCount = gpFrame.getMaxCount();
         int size = data.size();
-        if (maxCount == 0) {//最大值为0
+        if (maxCount == 0) //最大值为0
             return;
-        } else if (size < maxCount) {//小于最大值
-            data.add(position, t);
+
+
+        //增加 图片
+        if (size == 0) {//添加 第1个图片
+            data.add(t);
             notifyDataSetChanged();
-        } else {//等于最大值
+        } else if (size < maxCount) {//小于最大值
+            PictureEntity pictureEntity = data.get(size - 1);
+            if (pictureEntity.isAdd()) {//最后一个 为 新增 图标
+                data.add(size - 1, t);
+                notifyDataSetChanged();
+            } else {//最后一个为非新增图片
+                data.add(t);
+                notifyDataSetChanged();
+            }
+        } else if (size == maxCount) {//Grid 添加最后一个图片
             PictureEntity pictureEntity = data.get(size - 1);
             if (pictureEntity.isAdd()) {//去掉最后一个 为新增 图标，再数据设置进去
                 data.remove(size - 1);
-                data.add(position, t);
+                data.add(t);
                 notifyDataSetChanged();
             }
 
         }
     }
 
+
     public List<PictureEntity> getData() {
         return data;
     }
 
-//    public void addAllData(List<PictureEntity> list) {
-//        data.addAll(list);
-//    }
-//
-//    public void addAllData(int position, List<PictureEntity> list) {
-//        data.addAll(position, list);
-//    }
+    public void addAllData(List<String> paths) {
+        if (paths == null || paths.size() == 0)
+            return;
+
+        for (String path : paths) {
+            addPictureData(path);
+        }
+    }
+
 
     /**
      * 指定索引删除数据
@@ -243,8 +325,7 @@ class GridPictureAdapter extends RecyclerView.Adapter<GridPictureAdapter.ViewHol
         }
 
         if (!lasIsAddShow) {//最后一个非新增图标 并且 需要显示新增图标
-            PictureEntity pictureEntity = new PictureEntity(mGPOptions.getGPAddPicture().getAddResource(), true);
-            addData(data.size(), pictureEntity);
+            addonAddPictureData();
         }
 
     }

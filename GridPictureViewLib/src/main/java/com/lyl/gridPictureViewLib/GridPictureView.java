@@ -23,7 +23,6 @@ import com.lyl.gridPictureViewLib.options.GPAddPicture;
 import com.lyl.gridPictureViewLib.options.GPFrame;
 import com.lyl.gridPictureViewLib.options.GPOptions;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,28 +46,22 @@ public class GridPictureView extends RecyclerView implements GridPicture {
     public void addPicture(int resId) {
         if (mGridPictureAdapter == null)
             return;
-        PictureEntity pictureEntity = new PictureEntity(resId, false);
-        mGridPictureAdapter.addData(pictureEntity);
-
+        mGridPictureAdapter.addPictureData(resId);
     }
 
     @Override
     public void addPicture(String path) {
         if (mGridPictureAdapter == null)
             return;
-        PictureEntity pictureEntity = new PictureEntity(path, false);
-        mGridPictureAdapter.addData(pictureEntity);
+        mGridPictureAdapter.addPictureData(path);
     }
 
     @Override
     public void addPicture(List<String> paths) {
-        if (mGridPictureAdapter == null || paths == null)
+        if (mGridPictureAdapter == null)
             return;
 
-        for (String path : paths) {
-            PictureEntity pictureEntity = new PictureEntity(path, false);
-            mGridPictureAdapter.addData(pictureEntity);
-        }
+        mGridPictureAdapter.addAllData(paths);
     }
 
     @Override
@@ -156,14 +149,13 @@ public class GridPictureView extends RecyclerView implements GridPicture {
             gpAddPicture = new GPAddPicture();
 
         if (gpAddPicture.isShowAdd()) {//显示新增按钮
-            PictureEntity pictureEntity = new PictureEntity(gpAddPicture.getAddResource(), true);
             if (dataSize < maxCount) {
                 if (dataSize > 0) {
                     PictureEntity lasPictureEntity = mGridPictureAdapter.getData().get(dataSize - 1);
                     if (!lasPictureEntity.isAdd())//最后一个添加为 新增
-                        mGridPictureAdapter.addData(dataSize, pictureEntity);
+                        mGridPictureAdapter.addonAddPictureData();
                 } else {//等于0,第一个添加为 新增
-                    mGridPictureAdapter.addData(0, pictureEntity);
+                    mGridPictureAdapter.addonAddPictureData();
                 }
             }
         } else {//不显示新增加按钮
@@ -204,22 +196,25 @@ public class GridPictureView extends RecyclerView implements GridPicture {
     }
 
     @Override
-    public List<PictureEntity> getData() {
+    public List<String> getData() {
 
-        List<PictureEntity> pictureEntities = new ArrayList<>();
+        List<String> paths = new ArrayList<>();
 
-         //获取数据 减去新增加图标
-        if (mGridPictureAdapter != null) {
-            pictureEntities = mGridPictureAdapter.getData();
-            for (PictureEntity pictureEntity : pictureEntities) {
-                if (pictureEntity.isAdd()) {
-                    pictureEntities.remove(pictureEntity);
-                    break;
-                }
+        //获取数据 减去新增加图标
+        if (mGridPictureAdapter == null
+                || mGridPictureAdapter.getData() == null
+                || mGridPictureAdapter.getData().size() == 0)
+            return paths;
 
+
+        for (PictureEntity pictureEntity :  mGridPictureAdapter.getData()) {
+            if (!pictureEntity.isAdd()) {
+                paths.add(pictureEntity.getPicturePath());
             }
+
         }
-        return pictureEntities;
+
+        return paths;
     }
 
     //全局调用

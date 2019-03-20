@@ -45,5 +45,5 @@ public interface GridPicture {
      * 获取数据
      * @return
      */
-    List<PictureEntity> getData();
+    List<String> getData();
 }
